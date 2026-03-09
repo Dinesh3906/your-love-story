@@ -16,7 +16,7 @@ export const MusicControls = () => {
                 whileHover={{ scale: 1.1, backgroundColor: 'rgba(255, 183, 197, 0.2)' }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsRewardModalOpen(true)}
-                className="fixed bottom-16 right-4 sm:bottom-20 sm:right-8 z-[100] p-3 sm:p-4 rounded-full glass-morphism border border-cherry-blossom/60 text-white shadow-[0_0_30px_rgba(255,183,197,0.4)] hover:shadow-[0_0_40px_rgba(255,183,197,0.6)] transition-all group overflow-hidden"
+                className="fixed bottom-[138px] right-4 sm:bottom-[150px] sm:right-8 z-[100] p-3 sm:p-4 rounded-full glass-morphism border border-cherry-blossom/60 text-white shadow-[0_0_30px_rgba(255,183,197,0.4)] hover:shadow-[0_0_40px_rgba(255,183,197,0.6)] transition-all group overflow-hidden"
                 title="Watch Ad for Rewards"
             >
                 <div className="relative z-10 flex items-center justify-center">
@@ -30,7 +30,7 @@ export const MusicControls = () => {
                 whileHover={{ scale: 1.1, backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsMusicPlaying(!isMusicPlaying)}
-                className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-[100] p-3 sm:p-4 rounded-full glass-morphism border border-white/20 text-white shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] transition-all group overflow-hidden"
+                className="fixed bottom-24 right-4 sm:bottom-28 sm:right-8 z-[100] p-3 sm:p-4 rounded-full glass-morphism border border-white/20 text-white shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] transition-all group overflow-hidden"
                 title={isMusicPlaying ? "Mute Music" : "Play Music"}
             >
                 <div className="relative z-10 flex items-center justify-center">

@@ -14,22 +14,10 @@ export const AdRewardModal = ({ isOpen, onClose }: AdRewardModalProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [pendingReward, setPendingReward] = useState<'trust' | 'relationship' | 'vulnerable' | null>(null);
 
-    // AdMob Configuration
-    const ADMOB_AD_UNIT_ID = "ca-app-pub-5173875521561209/3146050116";
+    // AdMob Configuration (TEST ID - TEMPORARY)
+    const ADMOB_AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917";
 
-    useEffect(() => {
-        if (Capacitor.isNativePlatform()) {
-            console.log("Initializing AdMob...");
-            AdMob.initialize({
-                testingDevices: [],
-                initializeForTesting: false,
-            }).then(() => {
-                console.log("AdMob Initialized Successfully");
-            }).catch(e => {
-                console.error("AdMob Init Error:", e);
-            });
-        }
-    }, []);
+    // AdMob is initialized globally in App.tsx
 
     const applyReward = (type: 'trust' | 'relationship' | 'vulnerable') => {
         const { applyEphemeralReward } = useGameStore.getState();
@@ -59,13 +47,16 @@ export const AdRewardModal = ({ isOpen, onClose }: AdRewardModalProps) => {
             };
 
             try {
+                console.log(`Loading Reward Video Ad... ID: ${ADMOB_AD_UNIT_ID}`);
                 await AdMob.prepareRewardVideoAd(options);
                 const reward = await AdMob.showRewardVideoAd();
                 if (reward) {
+                    console.log("Reward Ad Completed Successfully");
                     applyReward(type);
                 }
             } catch (error: any) {
-                console.warn('Ad error:', error);
+                console.warn('Ad Mob Error Detail:', JSON.stringify(error, null, 2));
+                // Fallback UI Notification
                 useGameStore.getState().addNotification("Destiny's Favor", "The threads of fate aligned even without a trial...");
                 applyReward(type);
             }

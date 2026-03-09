@@ -9,10 +9,8 @@ import { AchievementOverlay } from './components/AchievementOverlay';
 import { AdMob, BannerAdOptions, BannerAdSize, BannerAdPosition, BannerAdPluginEvents, AdMobBannerSize } from '@capacitor-community/admob';
 import { Capacitor } from '@capacitor/core';
 
-// Ad Unit IDs
-const APP_OPEN_AD_ID = "ca-app-pub-5173875521561209/1500971548";
-const BANNER_AD_ID = "ca-app-pub-5173875521561209/5680578061";
-const INTERSTITIAL_AD_ID = "ca-app-pub-5173875521561209/6993659739";
+// Ad Unit IDs (TEST MODE)
+const BANNER_AD_ID = "ca-app-pub-3940256099942544/6300978111";
 
 function App() {
   const [gameState, setGameState] = useState<'start' | 'playing' | 'ending'>('start');
@@ -26,26 +24,18 @@ function App() {
   const initializeAdMob = async () => {
     try {
       await AdMob.initialize({
-        initializeForTesting: false,
+        testingDevices: [],
+        initializeForTesting: true, // TEMPORARY TEST MODE (as requested for rewards)
       });
 
       // Show Banner
       await showBanner();
 
-      // Pre-load Interstitial so it's ready for "Start Game"
-      await AdMob.prepareInterstitial({ adId: INTERSTITIAL_AD_ID });
-
+      console.log("AdMob Initialized Successfully (Global)");
     } catch (e) {
       console.error("AdMob Init Error:", e);
     }
   };
-
-  /* 
-  const showAppOpenAd = async () => {
-    // App Open Ad is not supported in the current version of the plugin (@capacitor-community/admob v0.x or v1.x)
-    // We will stick to Banner, Interstitial, and Rewarded.
-  };
-  */
 
   const showBanner = async () => {
     const options: BannerAdOptions = {
@@ -58,19 +48,7 @@ function App() {
     await AdMob.showBanner(options);
   };
 
-  const showInterstitialAd = async () => {
-    if (!Capacitor.isNativePlatform()) return;
-    try {
-      await AdMob.showInterstitial();
-      // Re-prepare for next time
-      await AdMob.prepareInterstitial({ adId: INTERSTITIAL_AD_ID });
-    } catch (e) {
-      console.warn("Interstitial Ad Failed or Not Ready:", e);
-    }
-  };
-
   const handleStartGame = () => {
-    showInterstitialAd();
     setGameState('playing');
   };
 

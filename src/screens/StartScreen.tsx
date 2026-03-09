@@ -156,7 +156,7 @@ export default function StartScreen({ onStart }: { onStart: () => void }) {
       </div>
 
       {/* RIGHT SIDE: Interactive glassmorphism card (40%) */}
-      <div className='flex-1 flex items-center justify-center p-4 sm:p-8 lg:p-12 xl:p-24 relative z-30 depth-container overflow-y-auto custom-scrollbar'>
+      <div className='flex-1 flex items-center justify-center p-4 sm:p-8 lg:p-12 xl:p-24 relative z-30 depth-container overflow-y-auto custom-scrollbar pb-32 lg:pb-16'>
         <motion.div
           style={{ rotateX, rotateY, perspective: 1500, translateZ: 100 }}
           initial={{ opacity: 0, y: 100, scale: 0.9 }}
