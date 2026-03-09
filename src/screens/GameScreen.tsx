@@ -61,11 +61,14 @@ const CherryPetalSystem = memo(() => {
 });
 
 export default function GameScreen({ onGameOver }: { onGameOver: () => void }) {
-  const { stats, scenes, setScenes, getCurrentScene, setCurrentScene, updateStats, setStats, userPrompt, history, addToHistory } = useGameStore();
+  const { stats, scenes, setScenes, getCurrentScene, setCurrentScene, updateStats, setStats, userPrompt, history, addToHistory, currentSceneId } = useGameStore();
   const [showChoices, setShowChoices] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [choices, setChoices] = useState<Choice[]>([]);
-  const [sceneIndex, setSceneIndex] = useState(0);
+  const [sceneIndex, setSceneIndex] = useState(() => {
+    const index = scenes.findIndex(s => s.id === currentSceneId);
+    return index >= 0 ? index : 0;
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   // Parallax Setup
@@ -82,6 +85,16 @@ export default function GameScreen({ onGameOver }: { onGameOver: () => void }) {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mouseX, mouseY]);
+
+  // Sync sceneIndex with currentSceneId when it changes externally (e.g., from HistoryModal)
+  useEffect(() => {
+    if (scenes.length > 0 && currentSceneId) {
+      const index = scenes.findIndex(s => s.id === currentSceneId);
+      if (index >= 0 && index !== sceneIndex) {
+        setSceneIndex(index);
+      }
+    }
+  }, [currentSceneId, scenes]);
 
   useEffect(() => {
     const initializeGame = async () => {
@@ -480,8 +493,9 @@ export default function GameScreen({ onGameOver }: { onGameOver: () => void }) {
           // Reset scene index to the end of the resumed story or specific point?
           // The resumeStory action in store already updates currentSceneId and scenes.
           // We should reset the local sceneIndex to match the state.
-          const resumeIndex = useGameStore.getState().scenes.length - 1;
-          setSceneIndex(resumeIndex >= 0 ? resumeIndex : 0);
+          const state = useGameStore.getState();
+          const resumeIndex = state.scenes.findIndex(s => s.id === state.currentSceneId);
+          setSceneIndex(resumeIndex >= 0 ? resumeIndex : (state.scenes.length - 1 >= 0 ? state.scenes.length - 1 : 0));
           setShowChoices(false);
           setIsLoading(false);
         }}
